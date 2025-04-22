@@ -1,0 +1,13 @@
+.flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
