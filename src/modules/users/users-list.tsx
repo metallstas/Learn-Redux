@@ -1,43 +1,21 @@
 import { useState } from 'react'
 import './users-list.css'
+import { useAppDispatch, useAppSelector } from '../../store'
+
 import {
-    AppState,
-    createAppSelector,
-    useAppDispatch,
-    useAppSelector,
+    selectSelectedUser,
+    selectSortedUsers,
     User,
     UserSelectedAction,
-} from './store'
-
-const selectSortedUsers = createAppSelector(
-    [
-        (state: AppState) => state.users.ids,
-        (state: AppState) => state.users.entities,
-        (_: AppState, sort: 'asc' | 'desc') => sort,
-    ],
-    (ids, entities, sortType) =>
-        ids
-            .map((id) => entities[id])
-            .sort((a, b) => {
-                if (sortType === 'asc') {
-                    return a.name.localeCompare(b.name)
-                } else {
-                    return b.name.localeCompare(a.name)
-                }
-            })
-)
-
-const selectSelectedUser = (state: AppState) =>
-    state.users.selectedUserId ? state.users.selectedUserId : undefined
+} from './users.slice'
 
 export const UserList = () => {
-    // const selectedUserId = useAppSelector((state) => state.users.selectedUserId)
     const [sortType, setSortType] = useState<'asc' | 'desc'>('asc')
     console.log('render UserList')
     const sortedUsers = useAppSelector((state) =>
         selectSortedUsers(state, sortType)
     )
-    const selectedUser = useAppSelector((state) => selectSelectedUser(state))
+    const selectedUser = useAppSelector(selectSelectedUser)
 
     return (
         <div className="flex flex-col items-center">
